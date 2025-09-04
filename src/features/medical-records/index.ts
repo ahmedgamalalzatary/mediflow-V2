@@ -1,8 +1,19 @@
 // Medical Records feature exports
-export * from './components/MedicalRecordCard';
-export * from './components/UploadRecordModal';
-export * from './components/RecordsList';
-export * from './hooks/useMedicalRecords';
-export * from './services/recordsService';
-export * from './store/recordsSlice';
-export * from './types/records.types';
+// This file serves as the main entry point for the medical records feature
+
+// Components (selective exports for better tree-shaking)
+export { MedicalRecordCard } from './components/MedicalRecordCard';
+export { UploadRecordModal } from './components/UploadRecordModal';
+export { RecordsList } from './components/RecordsList';
+
+// Hooks
+export { useMedicalRecords } from './hooks/useMedicalRecords';
+
+// Services
+export { recordsService } from './services/recordsService';
+
+// Store
+export { recordsSlice } from './store/recordsSlice';
+
+// Types
+export type * from './types/records.types';

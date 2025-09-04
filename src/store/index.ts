@@ -1,12 +1,21 @@
 // Store Configuration - Redux Toolkit Store Setup
 // Combines all feature slices into a single store
 
-export const store = {
-  // Store configuration will be implemented here
-  // All feature slices will be combined here
-};
+import { configureStore } from '@reduxjs/toolkit';
+import { rootReducer } from './rootReducer';
 
-export type RootState = any; // Will be properly typed
-export type AppDispatch = any; // Will be properly typed
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      },
+    }),
+  devTools: process.env.NODE_ENV !== 'production',
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

@@ -1,22 +1,22 @@
 // Appointments feature exports
 // This file serves as the main entry point for the appointments feature
 
-// Components
-export * from './components/AppointmentList';
-export * from './components/BookingModal';
-export * from './components/AppointmentCard';
-export * from './components/DoctorRequestCard';
-export * from './components/AvailabilityCalendar';
+// Components (selective exports for better tree-shaking)
+export { AppointmentList } from './components/AppointmentList';
+export { BookingModal } from './components/BookingModal';
+export { AppointmentCard } from './components/AppointmentCard';
+export { DoctorRequestCard } from './components/DoctorRequestCard';
+export { AvailabilityCalendar } from './components/AvailabilityCalendar';
 
 // Hooks
-export * from './hooks/useAppointments';
-export * from './hooks/useBooking';
+export { useAppointments } from './hooks/useAppointments';
+export { useBooking } from './hooks/useBooking';
 
 // Services
-export * from './services/appointmentsService';
+export { appointmentsService } from './services/appointmentsService';
 
 // Store
-export * from './store/appointmentsSlice';
+export { appointmentsSlice } from './store/appointmentsSlice';
 
 // Types
-export * from './types/appointment.types';
+export type * from './types/appointment.types';
