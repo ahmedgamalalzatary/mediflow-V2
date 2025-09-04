@@ -1,26 +1,184 @@
 @import "tailwindcss";
 
+/* Medical Color Schema for Tailwind v4 */
 :root {
+  /* Medical Color Schema - Light Mode */
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  
+  /* Primary - Medical Blue */
+  --primary: #0066ff;
+  --primary-foreground: #f8fafc;
+  
+  /* Secondary - Soft Medical Green */
+  --secondary: #059669;
+  --secondary-foreground: #f0fdf4;
+  
+  /* Accent - Light Medical Teal */
+  --accent: #f0fdfa;
+  --accent-foreground: #134e4a;
+  
+  /* Muted - Neutral Medical Gray */
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  
+  /* Destructive - Medical Red for alerts */
+  --destructive: #dc2626;
+  --destructive-foreground: #f8fafc;
+  
+  /* Border and Input */
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0066ff;
+  --radius: 0.5rem;
+  
+  /* Medical Success Green */
+  --success: #059669;
+  --success-foreground: #f0fdf4;
+  
+  /* Medical Warning Orange */
+  --warning: #ea580c;
+  --warning-foreground: #fffbeb;
+  
+  /* Medical Info Blue */
+  --info: #0066ff;
+  --info-foreground: #f8fafc;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Medical Color Schema - Dark Mode */
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --popover: #1e293b;
+    --popover-foreground: #f8fafc;
+    
+    /* Primary - Softer Medical Blue for dark */
+    --primary: #3b82f6;
+    --primary-foreground: #0f172a;
+    
+    /* Secondary - Muted Medical Green */
+    --secondary: #10b981;
+    --secondary-foreground: #0f172a;
+    
+    /* Accent - Dark Medical Teal */
+    --accent: #334155;
+    --accent-foreground: #f8fafc;
+    
+    /* Muted - Dark Medical Gray */
+    --muted: #334155;
+    --muted-foreground: #94a3b8;
+    
+    /* Destructive - Softer red for dark mode */
+    --destructive: #ef4444;
+    --destructive-foreground: #f8fafc;
+    
+    /* Border and Input */
+    --border: #334155;
+    --input: #334155;
+    --ring: #3b82f6;
+    --radius: 0.5rem;
+    
+    /* Medical Success Green - Dark */
+    --success: #10b981;
+    --success-foreground: #0f172a;
+    
+    /* Medical Warning Orange - Dark */
+    --warning: #f97316;
+    --warning-foreground: #0f172a;
+    
+    /* Medical Info Blue - Dark */
+    --info: #3b82f6;
+    --info-foreground: #0f172a;
   }
 }
 
+/* Base styles */
+* {
+  border-color: var(--border);
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Medical-specific utility classes */
+.medical-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.medical-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.medical-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.medical-button-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.medical-button-primary:hover {
+  background-color: color-mix(in srgb, var(--primary) 90%, black);
+}
+
+.medical-button-primary:active {
+  background-color: color-mix(in srgb, var(--primary) 80%, black);
+}
+
+.medical-button-primary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.medical-button-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.medical-button-secondary:hover {
+  background-color: color-mix(in srgb, var(--secondary) 90%, black);
+}
+
+.medical-button-secondary:active {
+  background-color: color-mix(in srgb, var(--secondary) 80%, black);
+}
+
+.medical-button-secondary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
