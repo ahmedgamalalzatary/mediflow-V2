@@ -1,89 +1,90 @@
-# Mediflow Application Specification
+# Mediflow MVP Application Specification
 
 ## Overview
 
-Mediflow is a healthcare management platform that connects patients with doctors for online consultations. The platform allows patients to maintain their medical history, search for doctors, schedule appointments, and communicate securely.
+Mediflow is a healthcare management platform that connects patients with doctors for appointment booking and basic communication. This MVP focuses on core appointment management functionality with simple medical record storage and text-based communication.
 
-## Target Users
+## Target Users (MVP Scope)
 
-- Patients (instant signup)
-- Doctors (verification required)
-- Admins (platform management)
+- **Patients**: Instant registration and access to book appointments
+- **Doctors**: Registration with basic verification (simplified for MVP)
+- **Admins**: Backend only (no UI in MVP)
 
-## Core Features
+## Core MVP Features
 
-### 1. User Management
+### 1. Authentication & User Management
 
 - **Patient Signup**: Instant registration and access
-- **Doctor Signup**: Requires document verification (diploma/certification)
-- **Doctor Verification**: Document upload + admin review process
-- **Account Activation**: Doctors receive email after verification
-- **Role-based Access**: Patients, Doctors, Admins
+- **Doctor Signup**: Basic registration (verification simplified for MVP)
+- **Role-based Access**: Patients and Doctors only
+- **Profile Management**: Basic personal information updates
 
-### 2. Patient History Management
+### 2. Doctor Discovery & Search
 
-- Comprehensive medical history recording
-- Document/image upload capability
-- OCR functionality to extract information from medical documents
-- Medical record organization and management
+- Search and filter doctors by specialty
+- View doctor profiles with:
+  - Specializations
+  - Basic qualifications
+  - Availability schedule
+  - Consultation rates
+  - Ratings from previous patients
 
-### 3. Doctor Profiles & Search
+### 3. Appointment Management
 
-- Detailed doctor profiles with specialties, qualifications, experience
-- Doctor ratings and reviews (1-5 stars + comments)
-- Advanced search and filtering:
-    - Specialty
-    - Availability
-    - Ratings
-    - Popularity
-    - Location
+**Patient Features:**
 
-### 4. Appointment System
+- Create appointment requests with specific doctors
+- Edit appointment time/date (subject to doctor approval)
+- Cancel booked appointments
+- View appointment history
 
-- Patient-driven appointment requests
-- Doctor workflow:
-    - Accept appointments
-    - Request changes to appointment data
-    - Decline appointments
-- Appointment details include:
-    - Patient illness
-    - Specific needs
-    - Questions
-    - Time and date preferences
+**Doctor Features:**
 
-### 5. Payment System
+- Receive and manage appointment requests
+- Accept, decline, or propose changes to appointments
+- Update availability schedule
+- Update consultation pricing
 
-- Appointment-based payments
-- Variable pricing per doctor/service
-- Integrated payment processing
+### 4. Basic Medical Records
 
-### 6. Communication System
+- Save and view personal medical records (text-based)
+- Simple file uploads (documents, images)
+- Basic organization and management
+- **Excluded from MVP**: OCR functionality
 
-- Real-time private messaging between patients and doctors
-- Message history and notifications
+### 5. Communication System
 
-### 7. Rating & Review System
+- Text-only chat between patient and doctor
+- Available after appointment confirmation
+- Message history
+- **Excluded from MVP**: Video/audio calls
 
-- Post-appointment rating submission (1-5 stars)
-- Written reviews and comments
-- Public display of doctor ratings
+### 6. Review & Rating System
 
-### 8. Admin Panel
+- Post-appointment reviews (1-5 stars + comments)
+- Display doctor ratings publicly
+- Review history management
 
-- Doctor verification workflow
-- User management
-- Support ticket system
-- Analytics dashboard
+## Features Explicitly Excluded from MVP
 
-## Technical Requirements
+To maintain focus on core functionality, the following are **NOT** included in this version:
+
+- ❌ **Admin Panel UI** (backend only for future)
+- ❌ **Payment System Integration** (manual payment coordination)
+- ❌ **OCR Document Processing**
+- ❌ **Video/Audio Consultations**
+- ❌ **Advanced Analytics**
+- ❌ **Complex Doctor Verification Process**
+- ❌ **Advanced Search Filters** (location, popularity)
+- ❌ **Real-time Notifications** (basic email notifications only)## Technical Requirements (MVP)
 
 ### Frontend
 
 - Next.js 15+ with App Router
 - TypeScript V5
 - Tailwind CSS V4
-- chadcn/ui component library
-- RTX + RTXQ ecosystem for state management
+- shadcn/ui component library
+- Redux Toolkit for state management
 - Supabase JavaScript client for database operations
 
 ### Backend
@@ -91,64 +92,57 @@ Mediflow is a healthcare management platform that connects patients with doctors
 - Supabase Database (PostgreSQL)
 - Supabase Auth for authentication and user management
 - Supabase Storage for medical documents and file uploads
-- Supabase Edge Functions for serverless API logic
-- Supabase Realtime for live messaging and notifications
-- OCR processing (Tesseract.js or integrated via Edge Functions)
-- Payment processing (Stripe integration via Edge Functions)
+- **Simplified for MVP**: Basic Edge Functions only as needed
+- **Excluded**: Complex OCR processing
+- **Excluded**: Payment processing integration
 
-### Accessibility
+### Security (MVP Scope)
 
-- 100% compliance with accessibility standards
-- Support for disabled users
-
-### Security
-
-- HIPAA/GDPR compliant data handling
-- Supabase Row Level Security (RLS) for data protection
+- Basic data protection with Supabase RLS
 - Supabase Auth with JWT tokens
-- Encrypted data storage via Supabase
 - Secure file uploads via Supabase Storage
+- **Future**: Full HIPAA/GDPR compliance
 
-## Database Schema
+## Database Schema (MVP)
 
 ### Users Table (Supabase Auth + Custom Profile)
 
 - Supabase Auth users table for authentication
 - Custom profiles table for additional user data
-- Profile information (name, contact details, etc.)
-- User type (patient/doctor/admin)
-- Verification status
+- Profile information (name, contact details, bio)
+- User type (patient/doctor)
+- Basic verification status
 - Account status
 
 ### Medical Records Table
 
-- Patient medical history data
+- Patient medical history data (text-based)
 - Document references (Supabase Storage URLs)
-- OCR extracted information
+- **Excluded**: OCR extracted information
 - Foreign key to user profiles
 
 ### Doctors Table
 
 - Specialty information
-- Qualifications and experience
+- Basic qualifications
 - Availability schedules
-- Pricing information
-- Rating data
+- Pricing information (hourly rates)
+- Rating data (aggregated from reviews)
 - Foreign key to user profiles
 
 ### Appointments Table
 
 - Appointment details
-- Status tracking (requested, accepted, declined, rescheduled)
-- Payment information
+- Status tracking (requested, accepted, declined, rescheduled, completed)
+- **Excluded**: Payment information (manual coordination)
 - Timestamps
 - Foreign keys to patient and doctor profiles
 
 ### Messages Table
 
-- Chat history between patients and doctors
+- Text-only chat history between patients and doctors
 - Message metadata (timestamps, read status)
-- Real-time subscriptions via Supabase Realtime
+- **Simplified**: Basic real-time subscriptions
 - Foreign keys to sender and receiver
 
 ### Reviews Table
@@ -158,48 +152,147 @@ Mediflow is a healthcare management platform that connects patients with doctors
 - Associated appointment reference
 - Foreign keys to appointment and reviewer
 
-## Development Phases
+## Feature Architecture Implementation
 
-### Phase 1: Foundation
+Based on the MVP requirements, we have implemented a **feature-based architecture** with the following structure:
 
-- Supabase project setup and configuration
-- Supabase Auth integration
-- Basic UI with chadcn/ui components
-- Database schema creation with RLS policies
-- Landing, login, and signup pages
+### ✅ Implemented Features
 
-### Phase 2: Core Functionality
+#### 1. **Auth Feature** (`/features/auth/`)
 
-- Patient history management with Supabase Storage
-- Doctor profiles and verification workflow
-- Search and filtering with Supabase queries
+- **Components**: SignInForm, SignUpForm, ForgotPasswordForm, ResetPasswordForm, VerifyEmailForm
+- **Hooks**: useAuth, useAuthState
+- **Services**: authService (Supabase Auth integration)
+- **Store**: authSlice (Redux Toolkit)
+- **Types**: Complete authentication type definitions
 
-### Phase 3: Appointment System
+#### 2. **Appointments Feature** (`/features/appointments/`)
 
-- Appointment requests with Supabase database
-- Doctor approval workflow
-- Payment integration via Supabase Edge Functions
+- **Components**: AppointmentList, BookingModal, AppointmentCard, DoctorRequestCard, AvailabilityCalendar
+- **Hooks**: useAppointments, useBooking
+- **Services**: appointmentsService
+- **Store**: appointmentsSlice
+- **Types**: Appointment management types
 
-### Phase 4: Communication & Reviews
+#### 3. **Doctor Search Feature** (`/features/doctor-search/`)
 
-- Real-time messaging with Supabase Realtime
-- Rating and review system
+- **Components**: DoctorSearchFilters, DoctorResultCard, DoctorsList, DoctorProfile
+- **Hooks**: useDoctorSearch
+- **Services**: searchService
+- **Store**: searchSlice
+- **Types**: Doctor search and filtering types
 
-### Phase 5: Admin Panel
+#### 4. **User Profile Feature** (`/features/user-profile/`)
 
-- Doctor verification
-- User management
-- Support system
+- **Components**: PatientProfileForm, DoctorProfileForm, ProfileSettings
+- **Hooks**: useProfile
+- **Services**: profileService
+- **Store**: profileSlice
+- **Types**: Profile management types
 
-### Phase 6: Polish & Optimization
+#### 5. **Medical Records Feature** (`/features/medical-records/`)
 
-- Accessibility compliance
-- Performance optimization
-- Testing and bug fixes
+- **Components**: MedicalRecordCard, UploadRecordModal, RecordsList
+- **Hooks**: useMedicalRecords
+- **Services**: recordsService
+- **Store**: recordsSlice
+- **Types**: Medical records types (simplified, no OCR)
 
-## Future Considerations
+#### 6. **Reviews Feature** (`/features/reviews/`)
 
-- Video consultation capabilities
-- Integration with third-party services
-- Mobile application development
-- Advanced analytics and reporting
+- **Components**: ReviewForm, DoctorReviewsList, ReviewCard
+- **Hooks**: useReviews
+- **Services**: reviewsService
+- **Store**: reviewsSlice
+- **Types**: Rating and review types
+
+#### 7. **Chat Feature** (`/features/chat/`)
+
+- **Components**: ChatWindow, MessageBubble, ChatList
+- **Hooks**: useChat
+- **Services**: chatService (text-only messaging)
+- **Store**: chatSlice
+- **Types**: Text-based chat types
+
+### 🏗️ Shared Infrastructure
+
+#### **Components**
+
+- **UI Components**: shadcn/ui library (pre-built)
+- **Shared Components**: Navbar, Sidebar, Footer
+
+#### **Global Utilities**
+
+- **Hooks**: useDebounce, useLocalStorage
+- **Types**: database.types (Supabase generated)
+- **Store**: Centralized Redux store with feature slice integration
+
+## MVP Development Phases
+
+### Phase 1: Foundation ✅ **COMPLETED**
+
+- ✅ Feature-based architecture setup
+- ✅ Component wireframes created
+- ✅ Type definitions established
+- ✅ Store structure configured
+- 🔄 **Next**: Supabase project setup
+
+### Phase 2: Authentication & Profiles
+
+- 🔄 **In Progress**: Supabase Auth integration
+- 🔄 **Next**: User registration and login flows
+- 🔄 **Next**: Basic profile management
+
+### Phase 3: Doctor Discovery
+
+- 🔄 **Next**: Doctor search functionality
+- 🔄 **Next**: Profile viewing and filtering
+- 🔄 **Next**: Basic doctor verification
+
+### Phase 4: Appointment System
+
+- 🔄 **Next**: Appointment booking flow
+- 🔄 **Next**: Doctor approval workflow
+- 🔄 **Next**: Appointment management
+
+### Phase 5: Communication & Records
+
+- 🔄 **Next**: Text-based chat system
+- 🔄 **Next**: Basic medical records
+- 🔄 **Next**: Review system
+
+### Phase 6: Polish & Testing
+
+- 🔄 **Future**: UI/UX improvements
+- 🔄 **Future**: Testing and bug fixes
+- 🔄 **Future**: Basic accessibility compliance
+
+## Future Considerations (Post-MVP)
+
+Features planned for future releases:
+
+- 🔮 **Admin Panel UI** (currently backend only)
+- 🔮 **Payment System Integration** (Stripe/PayPal)
+- 🔮 **OCR Document Processing** for medical records
+- 🔮 **Video/Audio Consultations**
+- 🔮 **Advanced Doctor Verification** workflow
+- 🔮 **Real-time Notifications** system
+- 🔮 **Advanced Search Filters** (location, popularity)
+- 🔮 **Mobile Application**
+- 🔮 **Analytics Dashboard**
+- 🔮 **Full HIPAA/GDPR Compliance**
+- 🔮 **Integration with third-party medical services**
+
+## Key Architecture Benefits
+
+✅ **Feature-Based Organization**: Each business domain is self-contained
+✅ **Scalable Structure**: Easy to add new features without affecting existing ones
+✅ **Developer Experience**: Intuitive file organization and clear boundaries
+✅ **Team Collaboration**: Different developers can work on different features
+✅ **Future-Ready**: Structure supports microservice extraction if needed
+
+## Current Status
+
+🏗️ **Architecture**: Complete wireframe structure implemented
+🔄 **Implementation**: Ready for feature development
+🎯 **Next Steps**: Begin with Authentication feature implementation and Supabase setup
