@@ -1,25 +1,57 @@
 // authSlice - Auth Feature
 // Redux slice for authentication state management
 
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { User } from '../types/auth.types';
+
 export interface AuthState {
-  // Authentication state interface will be defined here
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
-  // Initial state will be defined here
+  user: null,
+  isAuthenticated: false,
+  isLoading: false,
+  error: null,
 };
 
-// Auth slice will be implemented here using Redux Toolkit
-export const authSlice = {
-  // Slice configuration will be added here
-};
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      state.error = null;
+    },
+    clearUser: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.error = null;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
+});
 
-export const authActions = {
-  // Auth actions will be exported here
-};
+export const authActions = authSlice.actions;
 
 export const authSelectors = {
-  // Auth selectors will be exported here
+  selectUser: (state: { auth: AuthState }) => state.auth.user,
+  selectIsAuthenticated: (state: { auth: AuthState }) => state.auth.isAuthenticated,
+  selectIsLoading: (state: { auth: AuthState }) => state.auth.isLoading,
+  selectError: (state: { auth: AuthState }) => state.auth.error,
 };
 
 export default authSlice;
