@@ -2,11 +2,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/features/auth';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Heart, Bell, Settings, LogOut, User } from 'lucide-react';
+import { Heart, Bell, LogOut } from 'lucide-react';
 
 interface NavbarProps {
   title?: string;
@@ -14,16 +15,17 @@ interface NavbarProps {
 
 export function Navbar({ title = 'Dashboard' }: NavbarProps) {
   const { user, signOut } = useAuth();
+  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
       await signOut();
-      // Force redirect to signin page
-      window.location.href = '/signin';
+      // Use router for proper navigation instead of window.location
+      router.replace('/signin');
     } catch (error) {
       console.error('Sign out error:', error);
-      // Force redirect even if there's an error
-      window.location.href = '/signin';
+      // Fallback to router navigation even if there's an error
+      router.replace('/signin');
     }
   };
 
@@ -91,7 +93,7 @@ export function Navbar({ title = 'Dashboard' }: NavbarProps) {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              
+
               <DropdownMenuItem
                 onClick={handleSignOut}
                 className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"

@@ -5,7 +5,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '@/hooks/redux';
-import { getCurrentUser, signOut, hydrateAuthState } from '../store/authSlice';
+import { getCurrentUser, setUser, hydrateAuthState } from '../store/authSlice';
 import { supabase } from '@/lib/supabase';
 
 export const useAuthState = () => {
@@ -49,7 +49,9 @@ export const useAuthState = () => {
         if (event === 'SIGNED_IN' && session) {
           dispatch(getCurrentUser());
         } else if (event === 'SIGNED_OUT') {
-          dispatch(signOut());
+          // Don't dispatch signOut() to avoid circular dependency
+          // Just update the state directly
+          dispatch(setUser(null));
         } else if (event === 'TOKEN_REFRESHED' && session) {
           // Token refreshed - just dispatch getCurrentUser if needed
           dispatch(getCurrentUser());
