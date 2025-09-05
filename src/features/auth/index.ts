@@ -1,13 +1,6 @@
 // Auth feature exports
 // This file serves as the main entry point for the auth feature
 
-// Components (selective exports for better tree-shaking)
-export { SignInForm } from './components/SignInForm';
-export { SignUpForm } from './components/SignUpForm';
-export { ForgotPasswordForm } from './components/ForgotPasswordForm';
-export { ResetPasswordForm } from './components/ResetPasswordForm';
-export { VerifyEmailForm } from './components/VerifyEmailForm';
-
 // Hooks
 export { useAuth } from './hooks/useAuth';
 export { useAuthState } from './hooks/useAuthState';

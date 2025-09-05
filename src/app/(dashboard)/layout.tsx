@@ -13,7 +13,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const { user, isAuthenticated, isLoading } = useAuth();
-  
+
   // Initialize auth state listener
   useAuthState();
 
@@ -48,9 +48,11 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="flex">
-        <Sidebar className="fixed left-0 top-16 h-[calc(100vh-4rem)] bg-card border-r border-border" />
-        <main className="flex-1 ml-64 p-6">
-          {children}
+        <Sidebar className="fixed left-0 top-16 h-[calc(100vh-4rem)] z-40" />
+        <main className="flex-1 ml-64 p-8 bg-gradient-to-br from-background to-muted/20">
+          <div className="min-h-[calc(100vh-8rem)]">
+            {children}
+          </div>
         </main>
       </div>
     </div>

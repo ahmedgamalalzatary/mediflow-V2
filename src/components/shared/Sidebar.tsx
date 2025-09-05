@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/features/auth';
 import { cn } from '@/lib/utils';
-import { 
-  Calendar, 
-  Search, 
-  MessageSquare, 
-  FileText, 
-  User, 
-  Users, 
+import {
+  Calendar,
+  Search,
+  MessageSquare,
+  FileText,
+  User,
+  Users,
   Clock,
   Stethoscope,
   Star,
@@ -118,7 +118,7 @@ export function Sidebar({ className }: SidebarProps) {
 
   const getNavItems = () => {
     if (!user?.id) return [];
-    
+
     switch (user?.role) {
       case 'patient':
         return getPatientNavItems(user.id);
@@ -134,10 +134,13 @@ export function Sidebar({ className }: SidebarProps) {
   const navItems = getNavItems();
 
   return (
-    <div className={cn('pb-12 w-64', className)}>
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <div className="space-y-1">
+    <div className={cn('pb-12 w-64 bg-sidebar border-r border-sidebar-border', className)}>
+      <div className="space-y-4 py-6">
+        <div className="px-4 py-2">
+          <h2 className="mb-4 px-3 text-lg font-semibold tracking-tight text-sidebar-foreground">
+            Navigation
+          </h2>
+          <div className="space-y-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               return (
@@ -145,17 +148,52 @@ export function Sidebar({ className }: SidebarProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'flex items-center rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors',
-                    isActive 
-                      ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                      : 'text-muted-foreground'
+                    'group flex items-center rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02]',
+                    isActive
+                      ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-lg shadow-sidebar-primary/20'
+                      : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                   )}
                 >
-                  <item.icon className="mr-3 h-4 w-4" />
-                  {item.title}
+                  <div className={cn(
+                    'mr-3 rounded-md p-1.5 transition-colors',
+                    isActive
+                      ? 'bg-sidebar-primary-foreground/20'
+                      : 'bg-sidebar-accent group-hover:bg-sidebar-accent-foreground/10'
+                  )}>
+                    <item.icon className="h-4 w-4" />
+                  </div>
+                  <span className="flex-1">{item.title}</span>
+                  {isActive && (
+                    <div className="ml-auto h-2 w-2 rounded-full bg-sidebar-primary-foreground/60" />
+                  )}
                 </Link>
               );
             })}
+          </div>
+        </div>
+
+        {/* User Role Badge */}
+        <div className="px-4">
+          <div className="rounded-lg bg-sidebar-accent/50 p-4 border border-sidebar-border">
+            <div className="flex items-center space-x-3">
+              <div className="rounded-full bg-sidebar-primary p-2">
+                {user?.role === 'doctor' ? (
+                  <Stethoscope className="h-4 w-4 text-sidebar-primary-foreground" />
+                ) : user?.role === 'admin' ? (
+                  <Settings className="h-4 w-4 text-sidebar-primary-foreground" />
+                ) : (
+                  <User className="h-4 w-4 text-sidebar-primary-foreground" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-sidebar-foreground capitalize">
+                  {user?.role} Account
+                </p>
+                <p className="text-xs text-sidebar-foreground/60 truncate">
+                  {user?.firstName} {user?.lastName}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

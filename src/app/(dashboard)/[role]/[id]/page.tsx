@@ -4,7 +4,7 @@ import { useAuth } from '@/features/auth';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Search, MessageSquare, FileText, Clock, Heart, Users, Star, Stethoscope } from 'lucide-react';
+import { Calendar, MessageSquare, FileText, Clock, Heart, Users, Star, Stethoscope } from 'lucide-react';
 import Link from 'next/link';
 
 export default function UserDashboard() {
@@ -113,48 +113,59 @@ export default function UserDashboard() {
   const quickActions = getQuickActions();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 max-w-7xl mx-auto">
       {/* Welcome Section */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">
+      <div className="flex items-start justify-between">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             {role === 'doctor' ? `Welcome, Dr. ${user?.lastName}!` : `Welcome back, ${user?.firstName}!`}
           </h1>
-          <p className="text-muted-foreground mt-2">
-            {role === 'patient' && 'Manage your healthcare journey from your personal dashboard'}
-            {role === 'doctor' && 'Manage your practice and provide excellent patient care'}
-            {role === 'admin' && 'Oversee the healthcare platform and manage system operations'}
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            {role === 'patient' && 'Manage your healthcare journey from your personal dashboard. Access appointments, medical records, and communicate with your healthcare providers.'}
+            {role === 'doctor' && 'Manage your practice and provide excellent patient care. View your schedule, patient records, and track your performance.'}
+            {role === 'admin' && 'Oversee the healthcare platform and manage system operations. Monitor analytics, manage users, and maintain system health.'}
           </p>
         </div>
-        <div className="healthcare-gradient-primary p-4 rounded-xl">
+        <div className="bg-gradient-to-br from-primary to-primary/80 p-6 rounded-2xl shadow-lg">
           {role === 'doctor' ? (
-            <Stethoscope className="h-8 w-8 text-white" />
+            <Stethoscope className="h-10 w-10 text-primary-foreground" />
           ) : role === 'admin' ? (
-            <Users className="h-8 w-8 text-white" />
+            <Users className="h-10 w-10 text-primary-foreground" />
           ) : (
-            <Heart className="h-8 w-8 text-white" />
+            <Heart className="h-10 w-10 text-primary-foreground" />
           )}
         </div>
       </div>
 
       {/* Quick Actions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {quickActions.map((action) => (
-          <Card key={action.title} className="healthcare-card hover:shadow-lg transition-all duration-200">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+        {quickActions.map((action, index) => (
+          <Card
+            key={action.title}
+            className="group hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-border/50 bg-gradient-to-br from-card to-card/50"
+          >
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
                 {action.title}
               </CardTitle>
-              <div className={`${action.color} p-2 rounded-md`}>
-                <action.icon className="h-4 w-4 text-white" />
+              <div className={`bg-gradient-to-br ${index === 0 ? 'from-blue-500 to-blue-600' :
+                  index === 1 ? 'from-green-500 to-green-600' :
+                    index === 2 ? 'from-purple-500 to-purple-600' :
+                      'from-orange-500 to-orange-600'
+                } p-3 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                <action.icon className="h-5 w-5 text-white" />
               </div>
             </CardHeader>
-            <CardContent>
-              <CardDescription className="text-xs text-muted-foreground mb-4">
+            <CardContent className="space-y-4">
+              <CardDescription className="text-sm text-muted-foreground leading-relaxed">
                 {action.description}
               </CardDescription>
-              <Button asChild size="sm" className="w-full">
-                <Link href={action.href}>
+              <Button
+                asChild
+                size="sm"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Link href={action.href} className="font-medium">
                   Get Started
                 </Link>
               </Button>
@@ -163,92 +174,119 @@ export default function UserDashboard() {
         ))}
       </div>
 
-      {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="healthcare-card">
-          <CardHeader>
-            <CardTitle>
-              {role === 'patient' && 'Recent Appointments'}
-              {role === 'doctor' && 'Today\'s Schedule'}
-              {role === 'admin' && 'System Overview'}
-            </CardTitle>
-            <CardDescription>
-              {role === 'patient' && 'Your upcoming and recent appointments'}
-              {role === 'doctor' && 'Your appointments for today'}
-              {role === 'admin' && 'Platform statistics and activity'}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <div>
-                  <p className="font-medium">
-                    {role === 'patient' && 'No appointments scheduled'}
-                    {role === 'doctor' && 'No appointments today'}
-                    {role === 'admin' && 'System running smoothly'}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {role === 'patient' && 'Book your first appointment'}
-                    {role === 'doctor' && 'Set your availability'}
-                    {role === 'admin' && 'All systems operational'}
-                  </p>
-                </div>
-                <Button asChild size="sm">
-                  <Link href={
-                    role === 'patient' ? `/${role}/${userId}/doctors` :
-                    role === 'doctor' ? `/${role}/${userId}/schedule` :
-                    `/${role}/${userId}/analytics`
-                  }>
-                    {role === 'patient' && 'Book Now'}
-                    {role === 'doctor' && 'Set Schedule'}
-                    {role === 'admin' && 'View Details'}
-                  </Link>
-                </Button>
+      {/* Dashboard Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2 border-border/50 bg-gradient-to-br from-card to-card/50">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-xl font-semibold text-foreground">
+                  {role === 'patient' && 'Recent Appointments'}
+                  {role === 'doctor' && 'Today\'s Schedule'}
+                  {role === 'admin' && 'System Overview'}
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mt-1">
+                  {role === 'patient' && 'Your upcoming and recent appointments'}
+                  {role === 'doctor' && 'Your appointments for today'}
+                  {role === 'admin' && 'Platform statistics and activity'}
+                </CardDescription>
               </div>
+              <div className="bg-muted/50 p-3 rounded-xl">
+                <Calendar className="h-6 w-6 text-primary" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-muted/50 to-muted/30 rounded-xl border border-border/50">
+              <div className="space-y-1">
+                <p className="font-semibold text-foreground">
+                  {role === 'patient' && 'No appointments scheduled'}
+                  {role === 'doctor' && 'No appointments today'}
+                  {role === 'admin' && 'System running smoothly'}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {role === 'patient' && 'Book your first appointment with a trusted healthcare provider'}
+                  {role === 'doctor' && 'Set your availability to start receiving appointments'}
+                  {role === 'admin' && 'All systems operational - 99.9% uptime'}
+                </p>
+              </div>
+              <Button
+                asChild
+                size="sm"
+                className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                <Link href={
+                  role === 'patient' ? `/${role}/${userId}/doctors` :
+                    role === 'doctor' ? `/${role}/${userId}/schedule` :
+                      `/${role}/${userId}/analytics`
+                }>
+                  {role === 'patient' && 'Book Now'}
+                  {role === 'doctor' && 'Set Schedule'}
+                  {role === 'admin' && 'View Details'}
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="healthcare-card">
-          <CardHeader>
-            <CardTitle>
-              {role === 'patient' && 'Health Overview'}
-              {role === 'doctor' && 'Patient Reviews'}
-              {role === 'admin' && 'Recent Activity'}
-            </CardTitle>
-            <CardDescription>
-              {role === 'patient' && 'Your health summary and reminders'}
-              {role === 'doctor' && 'Your recent patient feedback'}
-              {role === 'admin' && 'Latest platform activities'}
-            </CardDescription>
+        <Card className="border-border/50 bg-gradient-to-br from-card to-card/50">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-xl font-semibold text-foreground">
+                  {role === 'patient' && 'Health Overview'}
+                  {role === 'doctor' && 'Patient Reviews'}
+                  {role === 'admin' && 'Recent Activity'}
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mt-1">
+                  {role === 'patient' && 'Your health summary'}
+                  {role === 'doctor' && 'Patient feedback'}
+                  {role === 'admin' && 'Latest activities'}
+                </CardDescription>
+              </div>
+              <div className="bg-muted/50 p-3 rounded-xl">
+                {role === 'patient' ? (
+                  <Heart className="h-6 w-6 text-primary" />
+                ) : role === 'doctor' ? (
+                  <Star className="h-6 w-6 text-primary" />
+                ) : (
+                  <FileText className="h-6 w-6 text-primary" />
+                )}
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <div>
-                  <p className="font-medium">
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-muted/50 to-muted/30 rounded-lg border border-border/50">
+                <div className="space-y-1">
+                  <p className="font-semibold text-sm text-foreground">
                     {role === 'patient' && 'Profile Complete'}
                     {role === 'doctor' && 'No reviews yet'}
                     {role === 'admin' && 'All systems updated'}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    {role === 'patient' && 'Keep your information up to date'}
+                  <p className="text-xs text-muted-foreground">
+                    {role === 'patient' && 'Keep information up to date'}
                     {role === 'doctor' && 'Complete appointments to get reviews'}
                     {role === 'admin' && 'Platform running latest version'}
                   </p>
                 </div>
-                <Button asChild size="sm" variant="outline">
-                  <Link href={
-                    role === 'patient' ? `/${role}/${userId}/profile` :
-                    role === 'doctor' ? `/${role}/${userId}/reviews` :
-                    `/${role}/${userId}/settings`
-                  }>
-                    {role === 'patient' && 'Update'}
-                    {role === 'doctor' && 'View All'}
-                    {role === 'admin' && 'Manage'}
-                  </Link>
-                </Button>
               </div>
+              <Button
+                asChild
+                size="sm"
+                variant="outline"
+                className="w-full hover:bg-accent hover:text-accent-foreground transition-all duration-300"
+              >
+                <Link href={
+                  role === 'patient' ? `/${role}/${userId}/profile` :
+                    role === 'doctor' ? `/${role}/${userId}/reviews` :
+                      `/${role}/${userId}/settings`
+                }>
+                  {role === 'patient' && 'Update Profile'}
+                  {role === 'doctor' && 'View All Reviews'}
+                  {role === 'admin' && 'Manage Settings'}
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>

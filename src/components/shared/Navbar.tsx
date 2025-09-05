@@ -32,65 +32,81 @@ export function Navbar({ title = 'Dashboard' }: NavbarProps) {
   };
 
   return (
-    <nav className="bg-card border-b border-border px-6 py-4">
+    <nav className="bg-card/95 border-b border-border px-6 py-4 sticky top-0 z-50 backdrop-blur-sm">
       <div className="flex items-center justify-between">
         {/* Logo and Title */}
-        <div className="flex items-center space-x-4">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="healthcare-gradient-primary p-2 rounded-lg">
-              <Heart className="h-6 w-6 text-white" />
+        <div className="flex items-center space-x-6">
+          <Link href="/" className="flex items-center space-x-3 group">
+            <div className="bg-gradient-to-br from-primary to-primary/80 p-2.5 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-200 group-hover:scale-105">
+              <Heart className="h-6 w-6 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">Mediflow</span>
+            <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+              Mediflow
+            </span>
           </Link>
-          <div className="h-6 w-px bg-border" />
-          <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+          <div className="h-8 w-px bg-border" />
+          <div className="flex flex-col">
+            <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+            <p className="text-xs text-muted-foreground capitalize">{user?.role} Dashboard</p>
+          </div>
         </div>
 
         {/* User Menu */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           {/* Notifications */}
-          <Button variant="ghost" size="sm" className="relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="relative h-10 w-10 rounded-full hover:bg-accent transition-colors"
+          >
             <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
+            <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs flex items-center justify-center text-destructive-foreground font-medium">
+              3
+            </span>
           </Button>
 
           {/* User Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-primary text-primary-foreground">
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent transition-colors">
+                <Avatar className="h-10 w-10 ring-2 ring-border hover:ring-primary transition-colors">
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold">
                     {user ? getInitials(user.firstName, user.lastName) : 'U'}
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <div className="flex flex-col space-y-1 p-2">
-                <p className="text-sm font-medium leading-none">
+            <DropdownMenuContent className="w-64 p-2" align="end" forceMount>
+              <div className="flex flex-col space-y-2 p-3 bg-muted/50 rounded-lg mb-2">
+                <p className="text-sm font-semibold leading-none text-foreground">
                   {user ? `${user.firstName} ${user.lastName}` : 'User'}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
                   {user?.email}
                 </p>
-                <p className="text-xs leading-none text-muted-foreground capitalize">
-                  {user?.role}
-                </p>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium capitalize">
+                    {user?.role}
+                  </span>
+                </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href={`/${user?.role}/profile`} className="cursor-pointer">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href={`/${user?.role}/profile`} className="flex items-center">
+                  <User className="mr-3 h-4 w-4" />
+                  <span>Profile Settings</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+              <DropdownMenuItem className="cursor-pointer">
+                <Settings className="mr-3 h-4 w-4" />
+                <span>Preferences</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
+              <DropdownMenuItem
+                onClick={handleSignOut}
+                className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+              >
+                <LogOut className="mr-3 h-4 w-4" />
                 <span>Sign Out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

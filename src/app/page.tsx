@@ -75,7 +75,7 @@ export default function LandingPage() {
             
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
               Your Health,{' '}
-              <span className="text-transparent bg-clip-text medical-gradient">
+              <span className=" bg-clip-text medical-gradient">
                 Our Priority
               </span>
             </h1>
