@@ -73,7 +73,6 @@ export async function middleware(request: NextRequest) {
     '/signup',
     '/forgot-password',
     '/reset-password',
-    '/verify-email',
     '/about',
     '/contact',
     '/doctors',

@@ -21,11 +21,22 @@ export class AuthService {
   
   async signUp(userData: SignUpData) {
     try {
+      console.log('Attempting signup with data:', {
+        email: userData.email,
+        metadata: {
+          full_name: `${userData.firstName} ${userData.lastName}`,
+          first_name: userData.firstName,
+          last_name: userData.lastName,
+          role: userData.role,
+        }
+      });
+
       const { data, error } = await supabase.auth.signUp({
         email: userData.email,
         password: userData.password,
         options: {
           data: {
+            full_name: `${userData.firstName} ${userData.lastName}`,
             first_name: userData.firstName,
             last_name: userData.lastName,
             role: userData.role,
@@ -33,9 +44,15 @@ export class AuthService {
         }
       });
 
-      if (error) throw error;
+      console.log('Supabase signup response:', { data, error });
+
+      if (error) {
+        console.error('Supabase signup error:', error);
+        throw error;
+      }
       return { data, error: null };
     } catch (error: any) {
+      console.error('Auth service signup error:', error);
       return { data: null, error: error.message };
     }
   }
@@ -90,7 +107,7 @@ export class AuthService {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle(); // Use maybeSingle() instead of single() to handle missing profiles
       
       if (error) throw error;
       return { data, error: null };

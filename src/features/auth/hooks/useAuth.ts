@@ -1,12 +1,45 @@
-// useAuth Hook - Auth Feature
-// Custom hook for authentication functionality
+// useAuth - Auth Feature
+// Custom hook for authentication
 
-export function useAuth() {
-  // Hook implementation will be added here
-  
-  return {
-    // Auth state and methods will be returned here
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { signIn, signUp, signOut, getCurrentUser, clearError } from '../store/authSlice';
+import type { AuthCredentials, SignUpData } from '../types/auth.types';
+
+export const useAuth = () => {
+  const dispatch = useAppDispatch();
+  const { user, isLoading, isAuthenticated, error } = useAppSelector((state) => state.auth);
+
+  const handleSignIn = async (credentials: AuthCredentials) => {
+    return dispatch(signIn(credentials));
   };
-}
+
+  const handleSignUp = async (userData: SignUpData) => {
+    return dispatch(signUp(userData));
+  };
+
+  const handleSignOut = async () => {
+    return dispatch(signOut());
+  };
+
+  const handleGetCurrentUser = async () => {
+    return dispatch(getCurrentUser());
+  };
+
+  const handleClearError = () => {
+    dispatch(clearError());
+  };
+
+  return {
+    user,
+    isLoading,
+    isAuthenticated,
+    error,
+    signIn: handleSignIn,
+    signUp: handleSignUp,
+    signOut: handleSignOut,
+    getCurrentUser: handleGetCurrentUser,
+    clearError: handleClearError,
+  };
+};
 
 export default useAuth;

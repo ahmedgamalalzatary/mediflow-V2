@@ -267,3 +267,23 @@ src/features/[feature-name]/
 | UI Update | Feature components/ | shared components/ | Responsive, A11y |
 
 Remember: **When in doubt, follow the existing patterns in the codebase. Consistency is key to maintainability.**
+
+## Important Configuration Notes
+
+### Supabase Settings
+- **Email Confirmation**: DISABLED for development (no email verification required)
+- **Authentication**: Users can sign up and immediately sign in
+- **Database**: Profiles table auto-creates via trigger function
+- **RLS Policies**: Configured for user data protection
+
+### Authentication Flow
+- Signup → Success message → Manual redirect to signin
+- Signin → Auto redirect to role-based dashboard (/[role]/[role] pattern)
+- No email verification step in development mode
+
+### Dashboard Routing Structure
+- Patient Dashboard: `/patient/[userId]`
+- Doctor Dashboard: `/doctor/[userId]`  
+- Admin Dashboard: `/admin/[userId]`
+- URL Pattern: `/[role]/[id]` where [id] is the user's UUID
+- File Structure: `/[role]/patient/page.tsx`, `/[role]/doctor/page.tsx`, `/[role]/admin/page.tsx`

@@ -1,6 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useAuth } from '@/features/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,10 +19,29 @@ import {
   Shield,
   Stethoscope
 } from 'lucide-react';
-import { useState } from 'react';
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { signIn, isLoading, error, clearError } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    clearError();
+    
+    try {
+      const result = await signIn({ email, password });
+      if (result.type === 'auth/signIn/fulfilled') {
+        const user = result.payload;
+        // Redirect based on user role and ID
+        router.push(`/${user.role}/${user.id}`);
+      }
+    } catch (error) {
+      console.error('Sign in error:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -97,7 +119,12 @@ export default function SignInPage() {
             </CardHeader>
             
             <CardContent className="space-y-6">
-              <form className="space-y-4">
+              {error && (
+                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-md text-sm">
+                  {error}
+                </div>
+              )}
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-foreground font-medium">
                     Email Address
@@ -109,6 +136,8 @@ export default function SignInPage() {
                       type="email"
                       placeholder="Enter your email"
                       className="pl-10 h-11 border-border focus:border-primary focus:ring-primary/20"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
@@ -125,6 +154,8 @@ export default function SignInPage() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       className="pl-10 pr-10 h-11 border-border focus:border-primary focus:ring-primary/20"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       required
                     />
                     <button
@@ -162,9 +193,10 @@ export default function SignInPage() {
 
                 <Button 
                   type="submit" 
-                  className="w-full h-11 medical-button-primary text-base font-medium"
+                  className="w-full h-11 healthcare-button-primary text-base font-medium"
+                  disabled={isLoading}
                 >
-                  Sign In to Dashboard
+                  {isLoading ? 'Signing In...' : 'Sign In to Dashboard'}
                 </Button>
               </form>
 

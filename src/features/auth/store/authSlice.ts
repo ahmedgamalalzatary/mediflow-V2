@@ -72,14 +72,27 @@ export const getCurrentUser = createAsyncThunk(
     
     if (user) {
       const { data: profile, error: profileError } = await authService.getUserProfile(user.id);
-      if (profileError) return rejectWithValue(profileError);
+      
+      // If no profile exists, create a basic user object with defaults
+      if (profileError || !profile) {
+        return {
+          id: user.id,
+          email: user.email!,
+          firstName: user.user_metadata?.first_name || '',
+          lastName: user.user_metadata?.last_name || '',
+          role: user.user_metadata?.role || 'patient',
+          isEmailVerified: user.email_confirmed_at !== null,
+          createdAt: user.created_at,
+          updatedAt: user.updated_at || user.created_at,
+        } as User;
+      }
       
       return {
         id: user.id,
         email: user.email!,
-        firstName: profile?.first_name || '',
-        lastName: profile?.last_name || '',
-        role: profile?.role || 'patient',
+        firstName: profile.full_name?.split(' ')[0] || '',
+        lastName: profile.full_name?.split(' ').slice(1).join(' ') || '',
+        role: profile.role || 'patient',
         isEmailVerified: user.email_confirmed_at !== null,
         createdAt: user.created_at,
         updatedAt: user.updated_at || user.created_at,
@@ -169,58 +182,3 @@ const authSlice = createSlice({
 export const { clearError, setUser } = authSlice.actions;
 export { authSlice };
 export default authSlice.reducer;
-
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { User } from '../types/auth.types';
-
-export interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
-
-const initialState: AuthState = {
-  user: null,
-  isAuthenticated: false,
-  isLoading: false,
-  error: null,
-};
-
-export const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
-    setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
-      state.isAuthenticated = true;
-      state.error = null;
-    },
-    clearUser: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-      state.error = null;
-    },
-    setError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    },
-    clearError: (state) => {
-      state.error = null;
-    },
-  },
-});
-
-export const authActions = authSlice.actions;
-
-export const authSelectors = {
-  selectUser: (state: { auth: AuthState }) => state.auth.user,
-  selectIsAuthenticated: (state: { auth: AuthState }) => state.auth.isAuthenticated,
-  selectIsLoading: (state: { auth: AuthState }) => state.auth.isLoading,
-  selectError: (state: { auth: AuthState }) => state.auth.error,
-};
-
-export default authSlice;
