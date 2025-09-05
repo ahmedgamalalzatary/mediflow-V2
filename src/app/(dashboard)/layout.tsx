@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth, useAuthState } from '@/features/auth';
+import { useAuth } from '@/features/auth';
 import { Navbar } from '@/components/shared/Navbar';
 import { Sidebar } from '@/components/shared/Sidebar';
 
@@ -13,9 +13,6 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const { user, isAuthenticated, isLoading } = useAuth();
-
-  // Initialize auth state listener
-  useAuthState();
 
   useEffect(() => {
     // Redirect to signin if not authenticated

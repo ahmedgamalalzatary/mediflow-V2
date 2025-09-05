@@ -10,6 +10,7 @@ interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   error: string | null;
+  lastAuthCheck: number | null; // Add timestamp for auth caching
 }
 
 const initialState: AuthState = {
@@ -17,6 +18,7 @@ const initialState: AuthState = {
   isLoading: false,
   isAuthenticated: false,
   error: null,
+  lastAuthCheck: null,
 };
 
 // Async thunks
@@ -27,15 +29,15 @@ export const signIn = createAsyncThunk(
     if (error) return rejectWithValue(error);
     
     // Get user profile
-    if (data.user) {
+    if (data?.user) {
       const { data: profile, error: profileError } = await authService.getUserProfile(data.user.id);
       if (profileError) return rejectWithValue(profileError);
       
       return {
         id: data.user.id,
         email: data.user.email!,
-        firstName: profile?.first_name || '',
-        lastName: profile?.last_name || '',
+        firstName: profile?.full_name?.split(' ')[0] || '',
+        lastName: profile?.full_name?.split(' ').slice(1).join(' ') || '',
         role: profile?.role || 'patient',
         isEmailVerified: data.user.email_confirmed_at !== null,
         createdAt: data.user.created_at,
@@ -66,7 +68,19 @@ export const signOut = createAsyncThunk(
 
 export const getCurrentUser = createAsyncThunk(
   'auth/getCurrentUser',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
+    // Check if we recently fetched auth state (cache for 5 minutes)
+    const state = getState() as { auth: AuthState };
+    const now = Date.now();
+    const fiveMinutes = 5 * 60 * 1000;
+    
+    if (state.auth.lastAuthCheck && 
+        state.auth.user && 
+        (now - state.auth.lastAuthCheck) < fiveMinutes) {
+      // Return cached user data
+      return state.auth.user;
+    }
+
     const { user, error } = await authService.getCurrentUser();
     if (error) return rejectWithValue(error);
     
@@ -79,9 +93,9 @@ export const getCurrentUser = createAsyncThunk(
         return {
           id: user.id,
           email: user.email!,
-          firstName: user.user_metadata?.first_name || user.raw_user_meta_data?.first_name || '',
-          lastName: user.user_metadata?.last_name || user.raw_user_meta_data?.last_name || '',
-          role: user.user_metadata?.role || user.raw_user_meta_data?.role || 'patient',
+          firstName: user.user_metadata?.first_name || '',
+          lastName: user.user_metadata?.last_name || '',
+          role: user.user_metadata?.role || 'patient',
           isEmailVerified: user.email_confirmed_at !== null,
           createdAt: user.created_at,
           updatedAt: user.updated_at || user.created_at,
@@ -127,6 +141,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
+        state.lastAuthCheck = Date.now(); // Update auth check timestamp
       })
       .addCase(signIn.rejected, (state, action) => {
         state.isLoading = false;
@@ -170,6 +185,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = !!action.payload;
         state.error = null;
+        state.lastAuthCheck = Date.now(); // Update auth check timestamp
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
