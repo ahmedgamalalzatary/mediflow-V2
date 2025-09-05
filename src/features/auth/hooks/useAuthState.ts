@@ -1,6 +1,8 @@
 // useAuthState - Auth Feature
 // Hook for auth state management
 
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '@/hooks/redux';
 import { getCurrentUser, signOut, hydrateAuthState } from '../store/authSlice';

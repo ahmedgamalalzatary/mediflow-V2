@@ -91,17 +91,7 @@ export function Navbar({ title = 'Dashboard' }: NavbarProps) {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link href={`/${user?.role}/profile`} className="flex items-center">
-                  <User className="mr-3 h-4 w-4" />
-                  <span>Profile Settings</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Settings className="mr-3 h-4 w-4" />
-                <span>Preferences</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              
               <DropdownMenuItem
                 onClick={handleSignOut}
                 className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"

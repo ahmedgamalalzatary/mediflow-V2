@@ -11,5 +11,8 @@ export { authService } from './services/authService';
 // Store
 export { authSlice } from './store/authSlice';
 
+// Components
+export { AuthRouteGuard } from '../../components/auth/AuthRouteGuard';
+
 // Types
 export type * from './types/auth.types';

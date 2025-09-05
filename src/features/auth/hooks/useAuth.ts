@@ -1,6 +1,8 @@
 // useAuth - Auth Feature
 // Custom hook for authentication
 
+'use client';
+
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { signIn, signUp, signOut, getCurrentUser, clearError } from '../store/authSlice';
 import type { AuthCredentials, SignUpData } from '../types/auth.types';
