@@ -55,6 +55,22 @@ const config: Config = {
           DEFAULT: 'var(--info)',
           foreground: 'var(--info-foreground)',
         },
+        'medical-blue': {
+          DEFAULT: 'var(--medical-blue)',
+          light: 'var(--medical-blue-light)',
+        },
+        'medical-teal': {
+          DEFAULT: 'var(--medical-teal)',
+          light: 'var(--medical-teal-light)',
+        },
+        'medical-green': {
+          DEFAULT: 'var(--medical-green)',
+          light: 'var(--medical-green-light)',
+        },
+        'warm-gray': {
+          DEFAULT: 'var(--warm-gray)',
+          light: 'var(--warm-gray-light)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

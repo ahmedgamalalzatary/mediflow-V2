@@ -1,101 +1,117 @@
 @import "tailwindcss";
 
-/* Medical Color Schema for Tailwind v4 */
+/* Enhanced Healthcare Color Schema for Tailwind v4 */
 :root {
-  /* Medical Color Schema - Light Mode */
-  --background: #ffffff;
-  --foreground: #0f172a;
+  /* Healthcare Color Schema - Light Mode */
+  --background: #fafbfc;
+  --foreground: #1a202c;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #2d3748;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #2d3748;
   
-  /* Primary - Medical Blue */
-  --primary: #0066ff;
-  --primary-foreground: #f8fafc;
+  /* Primary - Trust Blue (Healthcare Professional) */
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
   
-  /* Secondary - Soft Medical Green */
-  --secondary: #059669;
-  --secondary-foreground: #f0fdf4;
+  /* Secondary - Healing Teal (Medical Care) */
+  --secondary: #0891b2;
+  --secondary-foreground: #ffffff;
   
-  /* Accent - Light Medical Teal */
-  --accent: #f0fdfa;
-  --accent-foreground: #134e4a;
+  /* Accent - Wellness Green (Health & Vitality) */
+  --accent: #10b981;
+  --accent-foreground: #ffffff;
   
-  /* Muted - Neutral Medical Gray */
-  --muted: #f8fafc;
+  /* Muted - Soft Medical Gray */
+  --muted: #f1f5f9;
   --muted-foreground: #64748b;
   
-  /* Destructive - Medical Red for alerts */
+  /* Destructive - Medical Alert Red */
   --destructive: #dc2626;
-  --destructive-foreground: #f8fafc;
+  --destructive-foreground: #ffffff;
   
-  /* Border and Input */
+  /* Border and Input - Softer, more approachable */
   --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #0066ff;
-  --radius: 0.5rem;
+  --input: #f8fafc;
+  --ring: #2563eb;
+  --radius: 0.75rem;
   
-  /* Medical Success Green */
+  /* Healthcare Status Colors */
   --success: #059669;
-  --success-foreground: #f0fdf4;
+  --success-foreground: #ffffff;
   
-  /* Medical Warning Orange */
-  --warning: #ea580c;
-  --warning-foreground: #fffbeb;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
   
-  /* Medical Info Blue */
-  --info: #0066ff;
-  --info-foreground: #f8fafc;
+  --info: #0ea5e9;
+  --info-foreground: #ffffff;
+  
+  /* Healthcare Specific Colors */
+  --medical-blue: #1e40af;
+  --medical-blue-light: #dbeafe;
+  --medical-teal: #0d9488;
+  --medical-teal-light: #ccfbf1;
+  --medical-green: #059669;
+  --medical-green-light: #d1fae5;
+  --warm-gray: #6b7280;
+  --warm-gray-light: #f9fafb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Medical Color Schema - Dark Mode */
+    /* Healthcare Color Schema - Dark Mode */
     --background: #0f172a;
-    --foreground: #f8fafc;
+    --foreground: #f1f5f9;
     --card: #1e293b;
-    --card-foreground: #f8fafc;
+    --card-foreground: #f1f5f9;
     --popover: #1e293b;
-    --popover-foreground: #f8fafc;
+    --popover-foreground: #f1f5f9;
     
-    /* Primary - Softer Medical Blue for dark */
+    /* Primary - Softer Trust Blue for dark */
     --primary: #3b82f6;
-    --primary-foreground: #0f172a;
+    --primary-foreground: #ffffff;
     
-    /* Secondary - Muted Medical Green */
-    --secondary: #10b981;
-    --secondary-foreground: #0f172a;
+    /* Secondary - Softer Healing Teal */
+    --secondary: #06b6d4;
+    --secondary-foreground: #ffffff;
     
-    /* Accent - Dark Medical Teal */
-    --accent: #334155;
-    --accent-foreground: #f8fafc;
+    /* Accent - Softer Wellness Green */
+    --accent: #10b981;
+    --accent-foreground: #ffffff;
     
     /* Muted - Dark Medical Gray */
     --muted: #334155;
     --muted-foreground: #94a3b8;
     
-    /* Destructive - Softer red for dark mode */
+    /* Destructive - Softer alert red for dark mode */
     --destructive: #ef4444;
-    --destructive-foreground: #f8fafc;
+    --destructive-foreground: #ffffff;
     
-    /* Border and Input */
+    /* Border and Input - Dark mode friendly */
     --border: #334155;
-    --input: #334155;
+    --input: #1e293b;
     --ring: #3b82f6;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     
-    /* Medical Success Green - Dark */
+    /* Healthcare Status Colors - Dark */
     --success: #10b981;
-    --success-foreground: #0f172a;
+    --success-foreground: #ffffff;
     
-    /* Medical Warning Orange - Dark */
-    --warning: #f97316;
-    --warning-foreground: #0f172a;
+    --warning: #f59e0b;
+    --warning-foreground: #ffffff;
     
-    /* Medical Info Blue - Dark */
-    --info: #3b82f6;
-    --info-foreground: #0f172a;
+    --info: #0ea5e9;
+    --info-foreground: #ffffff;
+    
+    /* Healthcare Specific Colors - Dark */
+    --medical-blue: #3b82f6;
+    --medical-blue-light: #1e3a8a;
+    --medical-teal: #06b6d4;
+    --medical-teal-light: #164e63;
+    --medical-green: #10b981;
+    --medical-green-light: #065f46;
+    --warm-gray: #9ca3af;
+    --warm-gray-light: #374151;
   }
 }
 
@@ -108,61 +124,179 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.6;
 }
 
-/* Medical-specific utility classes */
-.medical-gradient {
+/* Custom Cursor Styles */
+.cursor-pointer-custom {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M8 3L16 12L8 21V16L2 12L8 8V3Z' fill='%232563eb'/%3E%3C/svg%3E"), pointer;
+}
+
+/* Enhanced Button Cursor and Interaction States */
+button, 
+.btn, 
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.healthcare-button-primary,
+.healthcare-button-secondary,
+.healthcare-button-outline {
+  cursor: pointer !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ripple Effect for Better Feedback */
+button::before,
+.btn::before,
+.healthcare-button-primary::before,
+.healthcare-button-secondary::before,
+.healthcare-button-outline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+button:active::before,
+.btn:active::before,
+.healthcare-button-primary:active::before,
+.healthcare-button-secondary:active::before,
+.healthcare-button-outline:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Healthcare-specific utility classes */
+.healthcare-gradient-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
-.medical-card {
+.healthcare-gradient-soft {
+  background: linear-gradient(135deg, var(--medical-blue-light) 0%, var(--medical-teal-light) 100%);
+}
+
+.healthcare-gradient-hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+}
+
+.healthcare-card {
   background-color: var(--card);
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  transition: box-shadow 0.15s ease-in-out;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  transition: all 0.2s ease-in-out;
 }
 
-.medical-card:hover {
+.healthcare-card:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: translateY(-2px);
+}
+
+.healthcare-card-elevated {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: all 0.2s ease-in-out;
 }
 
-.medical-button-primary {
+.healthcare-card-elevated:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  transform: translateY(-4px);
+}
+
+/* Enhanced Button Styles */
+.healthcare-button-primary {
   background-color: var(--primary);
   color: var(--primary-foreground);
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  transition: all 0.15s ease-in-out;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 
-.medical-button-primary:hover {
-  background-color: color-mix(in srgb, var(--primary) 90%, black);
+.healthcare-button-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%) !important;
+  box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.3), 0 4px 6px -4px rgba(37, 99, 235, 0.2);
+  transform: translateY(-2px) scale(1.02);
+  cursor: pointer !important;
 }
 
-.medical-button-primary:active {
-  background-color: color-mix(in srgb, var(--primary) 80%, black);
+.healthcare-button-primary:active {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0e7490 100%) !important;
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 4px -1px rgba(37, 99, 235, 0.4), 0 1px 2px -1px rgba(37, 99, 235, 0.3) !important;
+  transition: all 0.1s ease-in-out !important;
 }
 
-.medical-button-primary:focus-visible {
+.healthcare-button-primary:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
-.medical-button-secondary {
+.healthcare-button-secondary {
   background-color: var(--secondary);
   color: var(--secondary-foreground);
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  transition: all 0.15s ease-in-out;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
   border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.healthcare-button-secondary:hover {
+  background: linear-gradient(135deg, #0e7490 0%, #059669 100%) !important;
+  box-shadow: 0 8px 15px -3px rgba(8, 145, 178, 0.3), 0 4px 6px -4px rgba(8, 145, 178, 0.2);
+  transform: translateY(-2px) scale(1.02);
+  cursor: pointer !important;
+}
+
+.healthcare-button-secondary:active {
+  background: linear-gradient(135deg, #155e75 0%, #047857 100%) !important;
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 4px -1px rgba(8, 145, 178, 0.4), 0 1px 2px -1px rgba(8, 145, 178, 0.3) !important;
+  transition: all 0.1s ease-in-out !important;
+}
+
+.healthcare-button-secondary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.healthcare-button-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -170,15 +304,318 @@ body {
   gap: 0.5rem;
 }
 
-.medical-button-secondary:hover {
-  background-color: color-mix(in srgb, var(--secondary) 90%, black);
+.healthcare-button-outline:hover {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: var(--primary-foreground) !important;
+  border-color: transparent !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.25), 0 4px 6px -4px rgba(37, 99, 235, 0.15);
+  cursor: pointer !important;
 }
 
-.medical-button-secondary:active {
-  background-color: color-mix(in srgb, var(--secondary) 80%, black);
+.healthcare-button-outline:active {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0e7490 100%) !important;
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 4px -1px rgba(37, 99, 235, 0.4), 0 1px 2px -1px rgba(37, 99, 235, 0.3) !important;
+  transition: all 0.1s ease-in-out !important;
 }
 
-.medical-button-secondary:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+/* Password Field Icon Positioning Fix */
+.relative input[type="password"] + button,
+.relative input[type="text"] + button {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 10 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 4px !important;
+  cursor: pointer !important;
+  color: var(--muted-foreground) !important;
+  transition: color 0.2s ease-in-out !important;
+}
+
+.relative input[type="password"] + button:hover,
+.relative input[type="text"] + button:hover {
+  color: var(--foreground) !important;
+  background: transparent !important;
+  transform: translateY(-50%) scale(1.1) !important;
+}
+
+.relative input[type="password"] + button:active,
+.relative input[type="text"] + button:active {
+  transform: translateY(-50%) scale(0.95) !important;
+  transition: all 0.1s ease-in-out !important;
+}
+
+/* Lock Icon Positioning Fix */
+.relative .absolute.left-3 {
+  left: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+}
+
+/* Input Field Padding Adjustments */
+.relative input.pl-10 {
+  padding-left: 40px !important;
+}
+
+.relative input.pr-10 {
+  padding-right: 40px !important;
+}
+
+/* Landing Page Specific Styles */
+.landing-hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+.landing-section {
+  padding: 5rem 0;
+}
+
+.landing-feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.landing-feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Auth Page Specific Styles */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--medical-blue-light) 0%, var(--medical-teal-light) 100%);
+  padding: 2rem;
+}
+
+.auth-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3rem;
+  width: 100%;
+  max-width: 28rem;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.auth-form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  background-color: var(--input);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.auth-form-input:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent);
+}
+
+.auth-form-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* Enhanced Interactive Elements */
+a, 
+.link,
+[role="link"] {
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+a:hover,
+.link:hover {
+  color: var(--primary);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+a:hover::after,
+.link:hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: 1px;
+  animation: linkUnderline 0.3s ease-out;
+}
+
+@keyframes linkUnderline {
+  from {
+    width: 0;
+    left: 50%;
+  }
+  to {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Enhanced Form Elements */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  cursor: text !important;
+  transition: all 0.2s ease-in-out;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent) !important;
+}
+
+/* Enhanced Checkbox and Radio */
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent) !important;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%) !important;
+  border-color: var(--accent) !important;
+  transform: scale(1.05) !important;
+}
+
+input[type="checkbox"]:not(:checked),
+input[type="radio"]:not(:checked) {
+  background: var(--input) !important;
+  border-color: var(--border) !important;
+  transform: scale(1) !important;
+}
+
+/* Enhanced Card Hover Effects */
+.healthcare-card,
+.healthcare-card-elevated,
+.landing-feature-card {
+  cursor: pointer !important;
+}
+
+/* Fix Active State Persistence */
+button:not(:hover):not(:focus):not(:active),
+.healthcare-button-primary:not(:hover):not(:focus):not(:active),
+.healthcare-button-secondary:not(:hover):not(:focus):not(:active),
+.healthcare-button-outline:not(:hover):not(:focus):not(:active) {
+  background: var(--primary) !important;
+  transform: none !important;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.healthcare-button-secondary:not(:hover):not(:focus):not(:active) {
+  background: var(--secondary) !important;
+}
+
+.healthcare-button-outline:not(:hover):not(:focus):not(:active) {
+  background: transparent !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+/* Enhanced Selection States */
+::selection {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+}
+
+::-moz-selection {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: 4px;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M8 12H16M12 8V16' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"), pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0e7490 100%);
+}
+
+/* Status Badge Styles */
+.status-badge-success {
+  background-color: var(--medical-green-light);
+  color: var(--medical-green);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge-warning {
+  background-color: color-mix(in srgb, var(--warning) 20%, transparent);
+  color: var(--warning);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge-info {
+  background-color: var(--medical-blue-light);
+  color: var(--medical-blue);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
