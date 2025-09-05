@@ -104,18 +104,20 @@ export async function middleware(request: NextRequest) {
 
   const userRole = profile?.role;
 
-  // Redirect authenticated users away from auth pages
-  if (pathname.startsWith('/signin') || pathname.startsWith('/signup')) {
-    return NextResponse.redirect(new URL(getRoleBasedDashboard(userRole), request.url));
+  // Redirect authenticated users away from auth pages and home page
+  if (pathname === '/' || pathname.startsWith('/signin') || pathname.startsWith('/signup')) {
+    return NextResponse.redirect(new URL(getRoleBasedDashboard(userRole, session.user.id), request.url));
   }
 
   // Handle role-based dashboard routing
   if (pathname.startsWith('/patient') || pathname.startsWith('/doctor') || pathname.startsWith('/admin')) {
-    const requestedRole = pathname.split('/')[1];
+    const pathParts = pathname.split('/');
+    const requestedRole = pathParts[1];
+    const requestedUserId = pathParts[2];
     
-    // Check if user is accessing their correct role dashboard
-    if (userRole !== requestedRole) {
-      return NextResponse.redirect(new URL(getRoleBasedDashboard(userRole), request.url));
+    // Check if user is accessing their correct role dashboard and their own ID
+    if (userRole !== requestedRole || session.user.id !== requestedUserId) {
+      return NextResponse.redirect(new URL(getRoleBasedDashboard(userRole, session.user.id), request.url));
     }
   }
 
@@ -129,14 +131,16 @@ export async function middleware(request: NextRequest) {
 }
 
 // Helper function to get dashboard URL based on user role
-function getRoleBasedDashboard(role: string | undefined): string {
+function getRoleBasedDashboard(role: string | undefined, userId?: string): string {
+  if (!userId) return '/signin';
+  
   switch (role) {
     case USER_ROLES.PATIENT:
-      return '/patient';
+      return `/patient/${userId}`;
     case USER_ROLES.DOCTOR:
-      return '/doctor';
+      return `/doctor/${userId}`;
     case USER_ROLES.ADMIN:
-      return '/admin';
+      return `/admin/${userId}`;
     default:
       return '/signin';
   }

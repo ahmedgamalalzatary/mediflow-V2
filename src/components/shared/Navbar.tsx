@@ -16,7 +16,15 @@ export function Navbar({ title = 'Dashboard' }: NavbarProps) {
   const { user, signOut } = useAuth();
 
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+      // Force redirect to signin page
+      window.location.href = '/signin';
+    } catch (error) {
+      console.error('Sign out error:', error);
+      // Force redirect even if there's an error
+      window.location.href = '/signin';
+    }
   };
 
   const getInitials = (firstName: string, lastName: string) => {

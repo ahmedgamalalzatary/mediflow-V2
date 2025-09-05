@@ -75,12 +75,13 @@ export const getCurrentUser = createAsyncThunk(
       
       // If no profile exists, create a basic user object with defaults
       if (profileError || !profile) {
+        console.log('No profile found, using metadata:', user.user_metadata);
         return {
           id: user.id,
           email: user.email!,
-          firstName: user.user_metadata?.first_name || '',
-          lastName: user.user_metadata?.last_name || '',
-          role: user.user_metadata?.role || 'patient',
+          firstName: user.user_metadata?.first_name || user.raw_user_meta_data?.first_name || '',
+          lastName: user.user_metadata?.last_name || user.raw_user_meta_data?.last_name || '',
+          role: user.user_metadata?.role || user.raw_user_meta_data?.role || 'patient',
           isEmailVerified: user.email_confirmed_at !== null,
           createdAt: user.created_at,
           updatedAt: user.updated_at || user.created_at,
