@@ -127,6 +127,42 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
+      state.lastAuthCheck = Date.now();
+      
+      // Persist auth state to local storage for navigation recovery
+      if (typeof window !== 'undefined') {
+        if (action.payload) {
+          localStorage.setItem('mediflow_auth_cache', JSON.stringify({
+            user: action.payload,
+            timestamp: Date.now()
+          }));
+        } else {
+          localStorage.removeItem('mediflow_auth_cache');
+        }
+      }
+    },
+    // Add new action to hydrate from localStorage
+    hydrateAuthState: (state) => {
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem('mediflow_auth_cache');
+        if (cached) {
+          try {
+            const { user, timestamp } = JSON.parse(cached);
+            const fiveMinutes = 5 * 60 * 1000;
+            
+            if (Date.now() - timestamp < fiveMinutes) {
+              state.user = user;
+              state.isAuthenticated = true;
+              state.lastAuthCheck = timestamp;
+            } else {
+              localStorage.removeItem('mediflow_auth_cache');
+            }
+          } catch (error) {
+            console.warn('Failed to parse auth cache:', error);
+            localStorage.removeItem('mediflow_auth_cache');
+          }
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -142,6 +178,14 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.error = null;
         state.lastAuthCheck = Date.now(); // Update auth check timestamp
+        
+        // Persist to localStorage
+        if (typeof window !== 'undefined' && action.payload) {
+          localStorage.setItem('mediflow_auth_cache', JSON.stringify({
+            user: action.payload,
+            timestamp: Date.now()
+          }));
+        }
       })
       .addCase(signIn.rejected, (state, action) => {
         state.isLoading = false;
@@ -171,6 +215,11 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.error = null;
+        
+        // Clear localStorage on sign out
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('mediflow_auth_cache');
+        }
       })
       .addCase(signOut.rejected, (state, action) => {
         state.isLoading = false;
@@ -178,7 +227,10 @@ const authSlice = createSlice({
       })
       // Get Current User
       .addCase(getCurrentUser.pending, (state) => {
-        state.isLoading = true;
+        // Only show loading if we don't have any existing auth state
+        if (!state.user && !state.isAuthenticated) {
+          state.isLoading = true;
+        }
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -186,6 +238,18 @@ const authSlice = createSlice({
         state.isAuthenticated = !!action.payload;
         state.error = null;
         state.lastAuthCheck = Date.now(); // Update auth check timestamp
+        
+        // Persist to localStorage
+        if (typeof window !== 'undefined') {
+          if (action.payload) {
+            localStorage.setItem('mediflow_auth_cache', JSON.stringify({
+              user: action.payload,
+              timestamp: Date.now()
+            }));
+          } else {
+            localStorage.removeItem('mediflow_auth_cache');
+          }
+        }
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -196,6 +260,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, setUser } = authSlice.actions;
+export const { clearError, setUser, hydrateAuthState } = authSlice.actions;
 export { authSlice };
 export default authSlice.reducer;

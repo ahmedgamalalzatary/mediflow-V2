@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
         get(name: string) {
           return request.cookies.get(name)?.value;
         },
-        set(name: string, value: string, options: any) {
+        set(name: string, value: string, options: Record<string, unknown>) {
           request.cookies.set({
             name,
             value,
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
             ...options,
           });
         },
-        remove(name: string, options: any) {
+        remove(name: string, options: Record<string, unknown>) {
           request.cookies.set({
             name,
             value: '',
@@ -59,10 +59,22 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // Get the current session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // Get the current session with better error handling
+  let session = null;
+  try {
+    const {
+      data: { session: currentSession },
+      error
+    } = await supabase.auth.getSession();
+    
+    if (error) {
+      console.warn('Middleware session error:', error);
+    } else {
+      session = currentSession;
+    }
+  } catch (error) {
+    console.warn('Middleware session fetch failed:', error);
+  }
 
   const { pathname } = request.nextUrl;
 
@@ -95,12 +107,23 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  // User is authenticated - get user profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', session.user.id)
-    .single();
+  // User is authenticated - get user profile with error handling
+  let profile = null;
+  try {
+    const { data: userProfile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+    
+    if (profileError) {
+      console.warn('Middleware profile fetch error:', profileError);
+    } else {
+      profile = userProfile;
+    }
+  } catch (error) {
+    console.warn('Middleware profile fetch failed:', error);
+  }
 
   const userRole = profile?.role;
 

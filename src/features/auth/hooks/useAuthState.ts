@@ -1,31 +1,32 @@
 // useAuthState - Auth Feature
 // Hook for auth state management
 
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/hooks/redux';
-import { getCurrentUser, signOut } from '../store/authSlice';
+import { useEffect, useRef } from 'react';
+import { useAppDispatch } from '@/hooks/redux';
+import { getCurrentUser, signOut, hydrateAuthState } from '../store/authSlice';
 import { supabase } from '@/lib/supabase';
 
 export const useAuthState = () => {
   const dispatch = useAppDispatch();
-  const { user, isAuthenticated, isLoading, lastAuthCheck } = useAppSelector((state) => state.auth);
+  const initialized = useRef(false);
 
+  // Effect 1: Initialize auth state (runs once)
   useEffect(() => {
-    // Get initial session only if we don't have valid auth state
+    if (initialized.current) return;
+    initialized.current = true;
+
+    // First, try to hydrate from localStorage cache
+    dispatch(hydrateAuthState());
+    
+    // Get initial session after a small delay
     const initAuth = async () => {
       try {
-        // Skip if we already have recent auth data (within 5 minutes)
-        const now = Date.now();
-        const fiveMinutes = 5 * 60 * 1000;
+        // Small delay to allow hydration to complete first
+        await new Promise(resolve => setTimeout(resolve, 100));
         
-        if (user && isAuthenticated && lastAuthCheck && (now - lastAuthCheck) < fiveMinutes) {
-          console.log('Using cached auth state, skipping initialization');
-          return;
-        }
-
         // Check if we already have a session before making API call
         const { data: { session } } = await supabase.auth.getSession();
-        if (session && !isLoading) {
+        if (session) {
           console.log('Initializing auth state...');
           dispatch(getCurrentUser());
         }
@@ -35,21 +36,27 @@ export const useAuthState = () => {
     };
 
     initAuth();
+  }, [dispatch]); // Only depend on dispatch
 
-    // Listen for auth changes
+  // Effect 2: Auth state change listener (runs once)
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state change:', event, session?.user?.id);
+        
         if (event === 'SIGNED_IN' && session) {
           dispatch(getCurrentUser());
         } else if (event === 'SIGNED_OUT') {
           dispatch(signOut());
+        } else if (event === 'TOKEN_REFRESHED' && session) {
+          // Token refreshed - just dispatch getCurrentUser if needed
+          dispatch(getCurrentUser());
         }
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [dispatch, user, isAuthenticated, lastAuthCheck, isLoading]); // Include auth state dependencies
+  }, [dispatch]); // Only depend on stable dispatch
 };
 
 export default useAuthState;
